@@ -4,7 +4,7 @@
  * @type { import("node-fetch").default }
  */
 const fetch = require('node-fetch').default
-const { fetchMoralisNft, getUrls } = require('./util')
+const { fetchMoralisNft, getIpfsUrls } = require('./util')
 const env = require('../.env.json')
 
 const main = async () => {
@@ -24,7 +24,7 @@ const main = async () => {
     console.log(address, nfts.map((_) => _.token_id).join())
     // await new Promise((resolve) => setTimeout(resolve, 100))
   }
-  return getUrls(env.ipfsDirectoryCid, allNfts)
+  return getIpfsUrls(env.ipfsDirectoryCid, allNfts)
 }
 
 main().then((_) => console.log(_))
