@@ -32,7 +32,7 @@ const main = async () => {
     )
   }
   const results = await Promise.all(promises)
-  return results.map((res) => res.result.map((_: any) => _.token_id))
+  return results.flatMap((res) => res.result.map((_: any) => _.token_id))
 }
 
 main().then((_) => console.log(_))
