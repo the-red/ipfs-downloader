@@ -14,5 +14,3 @@ export type MoralisNft = {
   last_token_uri_sync: string
   last_metadata_sync: string
 }
-
-export type Promises = Promise<{ result: MoralisNft[] }>[]

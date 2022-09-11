@@ -9,16 +9,22 @@ const env = require('../.env.json')
 
 const main = async () => {
   /**
-   * @type { import("./types").Promises }
+   * @type { import("./types").MoralisNft[] }
    */
-  const promises = []
+  const allNfts = []
   for (const address of env.walletAddresses) {
-    promises.push(
-      fetchMoralisNft(fetch, address, env.tokenAddress, env.moralisApiKey).then((response) => response.json())
-    )
+    const response = await fetchMoralisNft(fetch, address, env.tokenAddress, env.moralisApiKey)
+    if (!response.ok) {
+      console.log(response.text())
+      continue
+    }
+    const nfts = (await response.json()).result
+    allNfts.push(...nfts)
+
+    console.log(address, nfts.map((_) => _.token_id).join())
+    // await new Promise((resolve) => setTimeout(resolve, 100))
   }
-  const nfts = (await Promise.all(promises)).flatMap((_) => _.result)
-  return getUrls(env.ipfsDirectoryCid, nfts)
+  return getUrls(env.ipfsDirectoryCid, allNfts)
 }
 
 main().then((_) => console.log(_))
