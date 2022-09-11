@@ -1,27 +1,18 @@
-import fetch from 'node-fetch'
-import env from '../.env.json'
+// @ts-check
 
-type MoralisNft = {
-  token_address: string
-  token_id: string
-  owner_of: string
-  block_number: string
-  block_number_minted: string
-  token_hash: string
-  amount: string
-  contract_type: string
-  name: string
-  symbol: string
-  token_uri: string
-  metadata: string
-  last_token_uri_sync: string
-  last_metadata_sync: string
-}
+/**
+ * @type { import("node-fetch").default }
+ */
+const fetch = require('node-fetch').default
+const env = require('../.env.json')
 
 const ipfsBaseUrl = `https://ipfs.io/ipfs/${env.ipfsDirectoryCid}`
 
 const main = async () => {
-  const promises: Promise<{ result: MoralisNft[] }>[] = []
+  /**
+   * @type { import("./types").Promises }
+   */
+  const promises = []
   for (const address of env.walletAddresses) {
     promises.push(
       fetch(
@@ -34,7 +25,7 @@ const main = async () => {
     )
   }
   const results = await Promise.all(promises)
-  const tokenIds = results.flatMap((res) => res.result.map((_: any) => _.token_id))
+  const tokenIds = results.flatMap((res) => res.result.map((_) => _.token_id))
 
   const urls = tokenIds.map((id) => `${ipfsBaseUrl}/${id}.png`)
   return urls
