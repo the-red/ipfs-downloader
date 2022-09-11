@@ -18,6 +18,8 @@ type MoralisNft = {
   last_metadata_sync: string
 }
 
+const ipfsBaseUrl = `https://ipfs.io/ipfs/${env.ipfsDirectoryCid}`
+
 const main = async () => {
   const promises: Promise<{ result: MoralisNft[] }>[] = []
   for (const address of env.walletAddresses) {
@@ -32,7 +34,10 @@ const main = async () => {
     )
   }
   const results = await Promise.all(promises)
-  return results.flatMap((res) => res.result.map((_: any) => _.token_id))
+  const tokenIds = results.flatMap((res) => res.result.map((_: any) => _.token_id))
+
+  const urls = tokenIds.map((id) => `${ipfsBaseUrl}/${id}.png`)
+  return urls
 }
 
 main().then((_) => console.log(_))
