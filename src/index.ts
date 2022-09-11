@@ -1,27 +1,21 @@
-import Moralis from 'moralis'
-import { EvmChain } from '@moralisweb3/evm-utils'
+import fetch from 'node-fetch'
 import env from '../.env.json'
 
 const main = async () => {
-  const chain = EvmChain.ETHEREUM
-
-  await Moralis.start({
-    apiKey: env.moralisApiKey,
-  })
-
-  const promises: ReturnType<typeof Moralis.EvmApi.nft.getWalletNFTs>[] = []
+  const promises: Promise<any>[] = []
   for (const address of env.walletAddresses) {
     promises.push(
-      Moralis.EvmApi.nft.getWalletNFTs({
-        address,
-        chain,
-        tokenAddresses: [env.tokenAddress],
-      })
+      fetch(
+        `https://deep-index.moralis.io/api/v2/${address}/nft?chain=eth&token_addresses=${env.tokenAddress}&limit=100`,
+        {
+          method: 'GET',
+          headers: { 'Accept': 'application/json', 'X-API-Key': env.moralisApiKey },
+        }
+      ).then((response) => response.json())
     )
   }
   const results = await Promise.all(promises)
-
-  return results.flatMap((res) => res.result.map((nft) => nft.format().tokenId))
+  return results.map((res) => res.result.map((_: any) => _.token_id))
 }
 
 main().then((_) => console.log(_))
