@@ -1,5 +1,3 @@
-import { index } from '../src/index'
-
-it('index', () => {
-  expect(index(1)).toBe(1)
+it('test', () => {
+  expect(1).toBe(1)
 })
