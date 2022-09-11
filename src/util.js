@@ -1,5 +1,5 @@
 /**
- * @type { import("./util.types").FetchMoralisNft }
+ * @type { import("./types").FetchMoralisNft }
  */
 const fetchMoralisNft = (fetch, address, tokenAddress, moralisApiKey) =>
   fetch(`https://deep-index.moralis.io/api/v2/${address}/nft?chain=eth&token_addresses=${tokenAddress}&limit=100`, {
@@ -9,7 +9,7 @@ const fetchMoralisNft = (fetch, address, tokenAddress, moralisApiKey) =>
 exports.fetchMoralisNft = fetchMoralisNft
 
 /**
- * @type { import("./util.types").GetUrls }
+ * @type { import("./types").GetUrls }
  */
 const getUrls = (ipfsDirectoryCid, nfts) => {
   const ipfsBaseUrl = `https://ipfs.io/ipfs/${ipfsDirectoryCid}`
