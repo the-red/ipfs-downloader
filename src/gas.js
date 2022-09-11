@@ -1,4 +1,6 @@
 function main() {
+  makeTrigger()
+
   // スプレッドシートからウォレットアドレス一覧を取得
   const ss = SpreadsheetApp.getActiveSpreadsheet()
   const logSheet = ss.getSheetByName('スクリプト実行ログ')
@@ -58,6 +60,12 @@ function setTokenIds() {
       console.log(row, address, tokenId)
     }
   }
+}
+
+function makeTrigger() {
+  const dt = new Date()
+  dt.setMinutes(dt.getMinutes() + 10) // 10分後に再実行
+  ScriptApp.newTrigger('main').timeBased().at(dt).create()
 }
 
 // NOTE: utilでexportsを使うためのおまじない
