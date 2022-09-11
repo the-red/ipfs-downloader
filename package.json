@@ -1,7 +1,9 @@
 {
   "name": "nounsnug-picturebook",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "test": "jest"
   },
   "license": "MIT",
   "devDependencies": {
