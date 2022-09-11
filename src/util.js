@@ -9,12 +9,14 @@ const fetchMoralisNft = (fetch, address, tokenAddress, moralisApiKey) =>
 exports.fetchMoralisNft = fetchMoralisNft
 
 /**
- * @type { import("./types").GetIpfsUrls }
+ * @type { import("./types").GetIpfsUrl }
  */
-const getIpfsUrls = (ipfsDirectoryCid, nfts) => {
-  const ipfsBaseUrl = `https://ipfs.io/ipfs/${ipfsDirectoryCid}`
-  const tokenIds = nfts.map((_) => _.token_id)
-  const urls = tokenIds.map((id) => `${ipfsBaseUrl}/${id}.png`)
-  return urls
+const getIpfsUrl = (ipfsDirectoryCid, tokenId) => {
+  // const ipfsBaseUrl = `https://ipfs.io/ipfs`
+  const ipfsBaseUrl = `https://cf-ipfs.com/ipfs`
+  // const ipfsBaseUrl = `https://dweb.link/ipns`
+  // const ipfsBaseUrl = `https://gateway.ipfs.io/ipns`
+  const url = `${ipfsBaseUrl}/${ipfsDirectoryCid}/${tokenId}.png`
+  return url
 }
-exports.getIpfsUrls = getIpfsUrls
+exports.getIpfsUrl = getIpfsUrl

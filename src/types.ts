@@ -8,7 +8,7 @@ export type FetchMoralisNft = (
   moralisApiKey: string
 ) => ReturnType<typeof fetch>
 
-export type GetIpfsUrls = (ipfsDirectoryCid: string, nfts: MoralisNft[]) => string[]
+export type GetIpfsUrl = (ipfsDirectoryCid: string, tokenId: string) => string
 
 export type MoralisNft = {
   token_address: string
