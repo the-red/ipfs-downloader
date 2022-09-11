@@ -8,6 +8,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.0.0",
+    "@types/node-fetch": "2",
     "jest": "^29.0.3",
     "prettier": "^2.7.1",
     "ts-jest": "^29.0.0",
@@ -17,6 +18,7 @@
   "dependencies": {
     "@moralisweb3/evm-utils": "^2.4.0",
     "moralis": "^2.4.0",
+    "node-fetch": "2",
     "web3-eth": "^1.7.5"
   }
 }
