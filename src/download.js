@@ -11,10 +11,12 @@ const fs = require('fs')
 const { getIpfsUrl } = require('./util')
 const env = require('../.env.json')
 
+const now = () => new Date().toLocaleString(env.locales, { timeZone: env.timeZone })
+
 const download = async (tokenId) => {
   const res = await fetch(tokenId)
   if (!res.ok) {
-    console.log('retrying...')
+    console.log(now(), 'retrying...')
     await new Promise((resolve) => setTimeout(resolve, 10000))
     return download(tokenId)
   }
@@ -29,7 +31,7 @@ const main = async () => {
       continue
     }
 
-    console.log(new Date().toLocaleString('ja-JP', { timeZone: env.timeZone }), tokenId, 'fetching...')
+    console.log(now(), tokenId, 'fetching...')
     const buffer = await download(getIpfsUrl(env.ipfsDirectoryCid, tokenId.toString()))
     fs.writeFileSync(fileName, buffer)
   }
