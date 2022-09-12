@@ -29,7 +29,7 @@ const main = async () => {
       continue
     }
 
-    console.log(tokenId, 'fetching...')
+    console.log(new Date().toLocaleString('ja-JP', { timeZone: env.timeZone }), tokenId, 'fetching...')
     const buffer = await download(getIpfsUrl(env.ipfsDirectoryCid, tokenId.toString()))
     fs.writeFileSync(fileName, buffer)
   }
