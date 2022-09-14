@@ -28,7 +28,8 @@ const download = async (tokenId) => {
 }
 
 const main = async () => {
-  for (const tokenId of env.tokenIds.reverse()) {
+  for (const tokenId of env.tokenIds) {
+    fs.mkdirSync('./data', { recursive: true })
     const fileName = `./data/${tokenId}.png`
     if (fs.existsSync(fileName)) {
       console.log(tokenId, 'exists!')
