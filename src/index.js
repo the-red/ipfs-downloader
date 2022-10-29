@@ -5,7 +5,7 @@
  */
 const fetch = require('node-fetch').default
 const { fetchMoralisNft, getIpfsUrl } = require('./util')
-const env = require('../.env.json')
+const env = require('../.env')
 
 const main = async () => {
   /**

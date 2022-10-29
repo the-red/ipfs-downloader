@@ -9,7 +9,7 @@ const fetch = require('node-fetch').default
  */
 const fs = require('fs')
 const { getIpfsUrl } = require('./util')
-const env = require('../.env.json')
+const env = require('../.env')
 
 const now = () => new Date().toLocaleString(env.locales, { timeZone: env.timeZone })
 
