@@ -8,7 +8,7 @@ const fetch = require('node-fetch').default
  * @type { import("fs") }
  */
 const fs = require('fs')
-const { getIpfsUrl } = require('./util')
+const { getUrl } = require('./util')
 const env = require('../.env')
 
 const now = () => new Date().toLocaleString(env.locales, { timeZone: env.timeZone })
@@ -27,20 +27,31 @@ const download = async (tokenId) => {
   return res.buffer()
 }
 
-const main = async () => {
-  for (const tokenId of env.tokenIds) {
-    fs.mkdirSync('./data', { recursive: true })
-    const fileName = `./data/${tokenId}.png`
-    if (fs.existsSync(fileName)) {
-      console.log(tokenId, 'exists!')
-      continue
-    }
+const io = async (tokenId) => {
+  fs.mkdirSync('./data', { recursive: true })
+  const fileName = `./data/${tokenId}.png`
+  if (fs.existsSync(fileName)) {
+    console.log(tokenId, 'exists!')
+    return
+  }
 
-    process.stdout.write(`${tokenId.toString().padStart(4)} `)
-    process.stdout.write(now())
-    process.stdout.write(` fetching...`)
-    const buffer = await download(getIpfsUrl(env.ipfsDirectoryCid, tokenId.toString()))
-    fs.writeFileSync(fileName, buffer)
+  process.stdout.write(`${tokenId.toString().padStart(4)} `)
+  process.stdout.write(now())
+  process.stdout.write(` fetching...`)
+  const url = getUrl(env, tokenId)
+  const buffer = await download(url)
+  fs.writeFileSync(fileName, buffer)
+}
+
+const main = async () => {
+  if (Array.isArray(env.tokenIds)) {
+    for (const tokenId of env.tokenIds) {
+      await io(tokenId)
+    }
+  } else if (env.minTokenId && env.maxTokenId) {
+    for (let tokenId = env.minTokenId; tokenId <= env.maxTokenId; tokenId++) {
+      await io(tokenId)
+    }
   }
 }
 main()

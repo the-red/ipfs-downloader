@@ -11,12 +11,25 @@ exports.fetchMoralisNft = fetchMoralisNft
 /**
  * @type { import("./types").GetIpfsUrl }
  */
-const getIpfsUrl = (ipfsDirectoryCid, tokenId) => {
+const getIpfsUrl = (ipfsDirectoryCid, fileName) => {
   // const ipfsBaseUrl = `https://ipfs.io/ipfs`
   const ipfsBaseUrl = `https://cf-ipfs.com/ipfs`
   // const ipfsBaseUrl = `https://dweb.link/ipns`
   // const ipfsBaseUrl = `https://gateway.ipfs.io/ipns`
-  const url = `${ipfsBaseUrl}/${ipfsDirectoryCid}/${tokenId}.png`
+  const url = `${ipfsBaseUrl}/${ipfsDirectoryCid}/${fileName}`
   return url
 }
 exports.getIpfsUrl = getIpfsUrl
+
+const getUrl = (env, tokenId) => {
+  const ext = env.gifTokenIds?.includes(tokenId) ? 'gif' : 'png'
+  if (env.baseUrl) {
+    return `${env.baseUrl}/${tokenId}.${ext}`
+  } else if (env.ipfsDirectoryCid) {
+    return getIpfsUrl(env.ipfsDirectoryCid, `${tokenId}.${ext}`)
+  } else {
+    console.error('No URL!')
+    process.exit(1)
+  }
+}
+exports.getUrl = getUrl
