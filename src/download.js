@@ -13,15 +13,21 @@ const env = require('../.env')
 
 const now = () => new Date().toLocaleString(env.locales, { timeZone: env.timeZone })
 
-const download = async (tokenId) => {
-  const res = await fetch(tokenId)
+const download = async (url, tokenId) => {
+  const res = await fetch(url)
   if (!res.ok) {
     console.log(`[${res.status}]${res.statusText}`)
+    if (res.status === 404 && !env.gifTokenIds.includes(tokenId)) {
+      env.gifTokenIds.push(tokenId)
+      url = getUrl(env, tokenId)
+      console.log(`${tokenId} is Gif!`)
+    }
+
     process.stdout.write(`     `)
     await new Promise((resolve) => setTimeout(resolve, 10000))
     process.stdout.write(now())
     process.stdout.write(` retrying...`)
-    return download(tokenId)
+    return download(url, tokenId)
   }
   console.log('done!')
   return res.buffer()
@@ -39,7 +45,7 @@ const io = async (tokenId) => {
   process.stdout.write(now())
   process.stdout.write(` fetching...`)
   const url = getUrl(env, tokenId)
-  const buffer = await download(url)
+  const buffer = await download(url, tokenId)
   fs.writeFileSync(fileName, buffer)
 }
 
